@@ -1,82 +1,116 @@
 import React, { useRef, useState } from 'react';
 import './Timer.scss';
 
-
-
 function Clock(props: any) {
   const time = useRef<number>(0);
-  const rightTime = useRef(0);
-  const seconds = useRef<number>(0);
-  const minutes = useRef<number>(25);
   const interval = useRef<any>(null);
   
-  const [ startTime, setStartTime ] = useState<number>(1500); //25 minutos
-  const [ breakTime, setBreakTime ] = useState<number>(300); // 4 minutos
-  const [ timeToShow, setTimeToShow ] = useState<string>(`${startTime / 60}:00`);
+  const workTime = useRef<number>(1500); //25 minutos
+  const restTime = useRef<number>(300); // 5 minutos
+  const seconds = useRef<number>(0);
+  const minutes = useRef<number>(workTime.current / 60);
+
+  const [ timeToShow, setTimeToShow ] = useState<string>(`${workTime.current / 60}:00`);
+
+  const [ startTimer, setStartTimer ] = useState<boolean>(false);
+  const [ changeState, setChangeState ] = useState<boolean>(false)
   
   const [ progressLeft, setProgressLeft ] = useState<object>({});
   const [ progressRight, setProgressRight ] = useState<object>({});
-  
-  var [ start, setStart ] = useState<boolean>(false);
-  var [ rest, setRest ] = useState<boolean>(false);
-
 
   const progressStyle = () => {
-    if (start) { 
+    if (!startTimer) {
+
+      let timerTime: number = !changeState ? workTime.current : restTime.current;
+
         setProgressLeft({
-          transform: `rotate(${time.current <= (startTime / 2) ? ((time.current * 180) / (startTime / 2)) : 180}deg)`,
-          backgroundColor: time.current === startTime ? '#B33030' : '#357C3C'
+          transform: `rotate(${time.current <= (timerTime / 2) ? ((time.current * 180) / (timerTime / 2)) : 180}deg)`,
+          backgroundColor: time.current === timerTime ? '#B33030' : '#357C3C'
         })
+        if (time.current > (timerTime / 2)) {
           setProgressRight({
-            transform: `rotate(${rightTime.current <= (startTime / 2) ? ((rightTime.current * 180) / (startTime / 2)) : 180}deg)`,
-            backgroundColor: time.current === startTime ? '#B33030' : '#357C3C'
+            transform: `rotate(${time.current > (timerTime / 2) ? (((time.current - timerTime / 2) * 180) / (timerTime / 2)) : 180}deg)`,
+            backgroundColor: time.current === timerTime ? '#B33030' : '#357C3C'
           })
+        } else setProgressRight({});
     } else {
       setProgressLeft({});
       setProgressRight({});
     }
   }
-
-  const startTimer = () => {
+  const timerFormat = (minutes: number, seconds: number) => {
 
     let secondsFormat: string = '00';
-    let minutesFormat: string = (startTime / 60).toString();
+    let minutesFormat: string = `${workTime.current / 60}`;
+
+    if (seconds < 10) secondsFormat = `0${seconds}`;
+    else secondsFormat = `${seconds}`;
     
-    if (!start && !rest) {
-      setStart(start = true);
+    if (minutes < 10) minutesFormat = `0${minutes}`;
+    else minutesFormat = `${minutes}`;
+
+    return `${minutesFormat}:${secondsFormat}`;
+  }
+
+  const handleStartWorkTimer = () => {
+    if (!startTimer) {
+      setStartTimer(true);
+
       interval.current = setInterval(() => {
-      time.current++;
-      if (time.current >= (startTime / 2)) rightTime.current++;
-      progressStyle();
+        time.current++;
 
         if (seconds.current > 0) seconds.current--;
         else seconds.current = 59;
-        
         if (seconds.current === 59) minutes.current--;
-        
-        if (seconds.current < 10) secondsFormat = `0${seconds.current}`;
-        else secondsFormat = `${seconds.current}`;
-        
-        if (minutes.current < 10) minutesFormat = `0${minutes.current}`;
-        else minutesFormat = `${minutes.current}`;
-        
-        if (time.current === startTime) {
-          setRest(rest = true);
-          minutes.current = (breakTime / 2);
-          setStart(start = false);
+
+        progressStyle();
+
+        setTimeToShow(timerFormat(minutes.current, seconds.current));
+
+        if (time.current === workTime.current) {
           time.current = 0;
-          rightTime.current = 0;
-          minutes.current = startTime / 60;
+          minutes.current = (restTime.current / 60)
           seconds.current = 0;
-          clearInterval(interval.current);
+          setChangeState(true)
+          setStartTimer(false);
           props.increaseCounter();
+          clearInterval(interval.current);
         }
-        
-        setTimeToShow(`${minutesFormat}:${secondsFormat}`);
-        
-      },1)
+      }, 1);
+      
     } else {
-      setStart(start = false);
+      setStartTimer(false);
+      clearInterval(interval.current);
+    }
+  }
+
+  const handleStartRestTimer = () => {
+    if (!startTimer) {
+      setStartTimer(true);
+
+      interval.current = setInterval(() => {
+        time.current++;
+
+        if (seconds.current > 0) seconds.current--;
+        else seconds.current = 59;
+        if (seconds.current === 59) minutes.current--;
+
+        progressStyle();
+
+        setTimeToShow(timerFormat(minutes.current, seconds.current));
+
+        if (time.current === restTime.current) {
+          time.current = 0;
+          minutes.current = (workTime.current / 60)
+          seconds.current = 0;
+          setChangeState(false)
+          setStartTimer(false);
+          clearInterval(interval.current);
+        }
+      }, 10);
+      
+    } else {
+      setStartTimer(false);
       clearInterval(interval.current);
     }
   }
@@ -85,7 +119,7 @@ function Clock(props: any) {
     <div className='clock-wrapper'>
       <div className='inside'>
         <h2 className='timer'>{ timeToShow }</h2>
-        <i onClick={startTimer} className={`fas ${!start ? 'fa-play' : 'fa-pause'} actions`}></i>
+        <i onClick={!changeState ? handleStartWorkTimer : handleStartRestTimer} className={`fas ${!startTimer ? 'fa-play' : 'fa-pause'} actions`}></i>
       </div>
       <div className='left'>
         <span style={progressLeft} className='progress'></span>

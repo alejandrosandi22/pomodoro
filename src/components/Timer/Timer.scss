@@ -48,8 +48,7 @@ E0DDAA
       width: 35rem;
       height: 35rem;
       background: #0c1116;
-      box-shadow: inset .5rem .5rem .2rem #050709,
-      inset -.5rem -.5rem .2rem #050709;
+      box-shadow: inset 0 0 1.1rem #050709;
       border-radius: 50%;
       .inside{
         z-index: 10;
@@ -65,8 +64,7 @@ E0DDAA
         height: 94%;
         width: 94%;
         background: #141E27;
-        box-shadow: .25rem .25rem .2rem #080c10,
-        -.25rem -.25rem .2rem #080c10;
+        box-shadow: 0 0 1.1rem #080c10;
         border-radius: 50%;
         .timer{
           font-size: 8rem;
