@@ -131,7 +131,7 @@ function Clock(props: any) {
   );
 }
 
-export default function Timer() {
+export default function Timer(props: any) {
 
   const [ counter, setCounter ] = useState<number>(0);
 
@@ -143,7 +143,7 @@ export default function Timer() {
     <div className="timer-container">
       <div className='title-wrapper'>
         <h1 className='title'>Pomodoro</h1>
-        <i className='fas fa-cog'></i>
+        <i onClick={props.handleToggle} className='fas fa-cog'></i>
       </div>
       <div className='clock-container'>
         <Clock increaseCounter={increaseCounter}/>
