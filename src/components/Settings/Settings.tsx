@@ -3,6 +3,9 @@ import './Settings.scss';
 
 export default function Settings(props: any) {
 
+  const pomodoro = useRef<HTMLInputElement>(null);
+  const rest = useRef<HTMLInputElement>(null);
+
   const toggleContainer = useRef<object>({});
   const toggleSettings = useRef<object>({}); 
 
@@ -22,12 +25,19 @@ export default function Settings(props: any) {
 
   }
 
+  const save = () => {
+    props.changeWorkTime(pomodoro, rest);
+    props.handleToggle();
+  }
+
   useEffect(() => {
+    pomodoro.current.value = (props.workTime / 60).toString();
+    rest.current.value = (props.restTime / 60).toString();
     if (props.start) {
       toggleContainer.current = {animation: props.toggle ? 'show-container .5s both' : 'hide-container .5s both'};
       toggleSettings.current = {animation: props.toggle ? 'show-settings .5s both' : 'hide-settings .6s both'};
-    }  
-  }, [props.start, props.toggle])
+    }
+  }, [props])
 
   return (
     <div className='settings-container' style={toggleContainer.current}>
@@ -41,13 +51,16 @@ export default function Settings(props: any) {
           <div className='inputs-container'>
             <div className='wrapper'>
               <label htmlFor="number">Pomodoro</label>
-              <input onChange={(e) => validateInput(e)} min="1" max="59" className='number' type="text" name="number" id="numer" />
+              <input ref={pomodoro} onChange={(e) => validateInput(e)} placeholder={(props.workTime / 60).toString()} min="1" max="59" className='number' type="text" name="wrok" id="work" required />
             </div>
             <div className='wrapper'>
               <label htmlFor="">Rest</label>
-              <input onChange={(e) => validateInput(e)}  min="1" max="59" className='number' type="text" name="rest" id="rest" />
+              <input ref={rest} onChange={(e) => validateInput(e)} placeholder={(props.restTime / 60).toString()} min="1" max="59" className='number' type="text" name="rest" id="rest" required />
             </div>
           </div>
+        </div>
+        <div className='button-wrapper'>
+          <button className='save' onClick={save} >Save</button>
         </div>
       </div>
     </div>

@@ -1,16 +1,15 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import './Timer.scss';
 
 function Clock(props: any) {
   const time = useRef<number>(0);
-  const interval = useRef<any>(null);
   
-  const workTime = useRef<number>(1500); //25 minutos
-  const restTime = useRef<number>(300); // 5 minutos
-  const seconds = useRef<number>(0);
-  const minutes = useRef<number>(workTime.current / 60);
+  const interval = useRef<any>(null);
 
-  const [ timeToShow, setTimeToShow ] = useState<string>(`${workTime.current / 60}:00`);
+  const seconds = useRef<number>(0);
+  const minutes = useRef<number>(props.workTime / 60);
+
+  const [ timeToShow, setTimeToShow ] = useState<string>(`${props.workTime / 60}:00`);
 
   const [ startTimer, setStartTimer ] = useState<boolean>(false);
   const [ changeState, setChangeState ] = useState<boolean>(false)
@@ -18,10 +17,20 @@ function Clock(props: any) {
   const [ progressLeft, setProgressLeft ] = useState<object>({});
   const [ progressRight, setProgressRight ] = useState<object>({});
 
+  useEffect(() => {
+    if (!changeState) {
+      setTimeToShow(`${props.workTime / 60}:00`);
+      minutes.current = (props.workTime / 60);
+    } else {
+      setTimeToShow(`${props.restTime / 60}:00`);
+      minutes.current = (props.restTime / 60);
+    }
+  }, [props, changeState])
+
   const progressStyle = () => {
     if (!startTimer) {
 
-      let timerTime: number = !changeState ? workTime.current : restTime.current;
+      let timerTime: number = !changeState ? props.workTime : props.restTime;
 
         setProgressLeft({
           transform: `rotate(${time.current <= (timerTime / 2) ? ((time.current * 180) / (timerTime / 2)) : 180}deg)`,
@@ -41,7 +50,7 @@ function Clock(props: any) {
   const timerFormat = (minutes: number, seconds: number) => {
 
     let secondsFormat: string = '00';
-    let minutesFormat: string = `${workTime.current / 60}`;
+    let minutesFormat: string = `${props.workTime / 60}`;
 
     if (seconds < 10) secondsFormat = `0${seconds}`;
     else secondsFormat = `${seconds}`;
@@ -67,16 +76,17 @@ function Clock(props: any) {
 
         setTimeToShow(timerFormat(minutes.current, seconds.current));
 
-        if (time.current === workTime.current) {
+        if (time.current === props.workTime) {
           time.current = 0;
-          minutes.current = (restTime.current / 60)
+          setTimeToShow(`${props.restTime / 60}:00`);
+          minutes.current = (props.restTime / 60);
           seconds.current = 0;
           setChangeState(true)
           setStartTimer(false);
           props.increaseCounter();
           clearInterval(interval.current);
         }
-      }, 1);
+      }, 1000);
       
     } else {
       setStartTimer(false);
@@ -99,15 +109,16 @@ function Clock(props: any) {
 
         setTimeToShow(timerFormat(minutes.current, seconds.current));
 
-        if (time.current === restTime.current) {
+        if (time.current === props.restTime) {
           time.current = 0;
-          minutes.current = (workTime.current / 60)
+          setTimeToShow(`${props.workTime / 60}:00`);
+          minutes.current = (props.workTime / 60);
           seconds.current = 0;
           setChangeState(false)
           setStartTimer(false);
           clearInterval(interval.current);
         }
-      }, 10);
+      }, 1000);
       
     } else {
       setStartTimer(false);
@@ -146,7 +157,7 @@ export default function Timer(props: any) {
         <i onClick={props.handleToggle} className='fas fa-cog'></i>
       </div>
       <div className='clock-container'>
-        <Clock increaseCounter={increaseCounter}/>
+        <Clock increaseCounter={increaseCounter} workTime={props.workTime} restTime={props.restTime}/>
       </div>
       <div className='counter-wrapper'>
         <h3 className='counter'>{ counter }</h3>
