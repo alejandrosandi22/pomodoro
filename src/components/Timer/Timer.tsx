@@ -18,6 +18,8 @@ function Clock(props: any) {
   const [ progressRight, setProgressRight ] = useState<object>({});
 
   useEffect(() => {
+    time.current = 0;
+    seconds.current = 0;
     if (!changeState) {
       setTimeToShow(`${props.workTime / 60}:00`);
       minutes.current = (props.workTime / 60);
@@ -25,7 +27,7 @@ function Clock(props: any) {
       setTimeToShow(`${props.restTime / 60}:00`);
       minutes.current = (props.restTime / 60);
     }
-  }, [props, changeState])
+  }, [changeState, props.workTime, props.restTime]);
 
   const progressStyle = () => {
     if (!startTimer) {
@@ -47,6 +49,7 @@ function Clock(props: any) {
       setProgressRight({});
     }
   }
+
   const timerFormat = (minutes: number, seconds: number) => {
 
     let secondsFormat: string = '00';

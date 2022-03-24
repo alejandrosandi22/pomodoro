@@ -3,22 +3,21 @@ import Timer from './components/Timer/Timer';
 import Settings from './components/Settings/Settings';
 import { useLocalStorage } from './services/localStorage';
 
-function App() {
+export default function App() {
 
+  const [ start, setStart] = useState<boolean>(false);
   const [ toggle, setToggle ] = useState<boolean>(false);
 
-  var [ workTime, setWorkTime ] = useLocalStorage('work-time', 1500); //25 minutos
-  var [ restTime, setRestTime] = useLocalStorage('rest-time', 300); // 5 minutos
-
-  var [ start, setStart] = useState(false);
+  const [ workTime, setWorkTime ] = useLocalStorage('work-time', 1500); //25 minutos
+  const [ restTime, setRestTime] = useLocalStorage('rest-time', 300); // 5 minutos
 
   const changeWorkTime = (pomodoro: any, rest: any) => {
-    setWorkTime(workTime = parseInt(pomodoro.current.value) * 60);
-    setRestTime(restTime = parseInt(rest.current.value) * 60);
+    setWorkTime(parseInt(pomodoro.current.value) * 60);
+    setRestTime(parseInt(rest.current.value) * 60);
   }
 
   const handleToggle = () => {
-    setStart(start = true);
+    setStart(true);
     if (!toggle) setToggle(true);
     else setToggle(toggle => !toggle);
   }
@@ -30,5 +29,3 @@ function App() {
     </div>
   );
 }
-
-export default App;

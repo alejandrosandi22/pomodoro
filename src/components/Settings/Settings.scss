@@ -15,7 +15,7 @@
     height: 20rem;
     background: #fff;
     border-radius: 1rem;
-    padding: 1rem 2rem;
+    padding: 1rem 2rem 2rem 2rem;
     .title-wrapper{
       height: 25%;
       display: flex;
@@ -27,10 +27,10 @@
         color: #000;
       }
       .fa-times{
-        font-size: 1.2rem;
+        font-size: 1.4rem;
         cursor: pointer;
-        &:hover{
-          filter: brightness(110%);
+        &:active{
+          transform: scale(.8);
         }
       }
     }
@@ -82,6 +82,22 @@
       }
     }
   }
+}
+.show {
+  animation: show-container .5s both;
+  .settings {
+    animation: show-settings .5s both;
+  }
+}
+.hide {
+  animation: hide-container .5s both;
+  .settings {
+    animation: hide-settings .5s both;
+  }
+}
+
+.preload {
+  animation: hide-container 0s both;
 }
 
 @keyframes show-container {
