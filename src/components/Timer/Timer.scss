@@ -20,7 +20,7 @@
       font-size: 1.7rem;
       cursor: pointer;
       &:active{
-        filter: brightness(90%);
+        transform: scale(.8);
       }
     }
   }

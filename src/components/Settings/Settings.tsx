@@ -6,9 +6,6 @@ export default function Settings(props: any) {
   const pomodoro = useRef<HTMLInputElement>(null);
   const rest = useRef<HTMLInputElement>(null);
 
-  const toggleContainer = useRef<object>({});
-  const toggleSettings = useRef<object>({}); 
-
   const validateInput = (e: any) => {
 
     const input: any = e.target;
@@ -33,15 +30,11 @@ export default function Settings(props: any) {
   useEffect(() => {
     pomodoro.current.value = (props.workTime / 60).toString();
     rest.current.value = (props.restTime / 60).toString();
-    if (props.start) {
-      toggleContainer.current = {animation: props.toggle ? 'show-container .5s both' : 'hide-container .5s both'};
-      toggleSettings.current = {animation: props.toggle ? 'show-settings .5s both' : 'hide-settings .6s both'};
-    }
-  }, [props])
+  }, [])
 
   return (
-    <div className='settings-container' style={toggleContainer.current}>
-      <div className='settings' style={toggleSettings.current}>
+    <div className={`settings-container ${props.toggle ? 'show' : 'hide'} ${!props.start ? 'preload' : ''}`}>
+      <div className='settings'>
         <div className='title-wrapper'>
           <h4 className='title'>Settings</h4>
           <i onClick={props.handleToggle} className='fas fa-times'></i>
