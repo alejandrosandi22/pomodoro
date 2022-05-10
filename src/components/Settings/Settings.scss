@@ -1,4 +1,4 @@
-.settings-container{
+.settings-container {
   z-index: 20;
   position: absolute;
   top: 0;
@@ -10,89 +10,89 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  .settings{
+  .settings {
     width: 35rem;
     height: 20rem;
     background: #fff;
     border-radius: 1rem;
     padding: 1rem 2rem 2rem 2rem;
-    .title-wrapper{
+    .title-wrapper {
       height: 25%;
       display: flex;
       align-items: center;
       justify-content: space-between;
       border-bottom: 1px solid #aaa;
-      .title{
+      .title {
         font-size: 2rem;
         color: #000;
       }
-      .fa-times{
+      .fa-times {
         font-size: 1.4rem;
         cursor: pointer;
-        &:active{
-          transform: scale(.8);
+        &:active {
+          transform: scale(0.8);
         }
       }
     }
-    .time-settings-wrapper{
+    .time-settings-wrapper {
       height: 65%;
       display: flex;
       flex-direction: column;
       justify-content: space-evenly;
-      .subtitle{
+      .subtitle {
         font-size: 1.2rem;
       }
-      .inputs-container{
+      .inputs-container {
         display: flex;
         justify-content: space-around;
         align-items: center;
-        .wrapper{
+        .wrapper {
           display: flex;
           flex-direction: column;
-          .number{
+          .number {
             all: unset;
-            background: #E9E9ED;
+            background: #e9e9ed;
             width: 10rem;
             height: 2rem;
-            padding: 0 .5rem;
-            margin: .5rem 0;
-            border-radius: .5rem;
+            padding: 0 0.5rem;
+            margin: 0.5rem 0;
+            border-radius: 0.5rem;
           }
         }
       }
     }
-    .button-wrapper{
+    .button-wrapper {
       height: 10%;
-      .save{
+      .save {
         all: unset;
         float: right;
         width: 5rem;
         height: 2rem;
-        background: #141E27;
-        color: #E9E9ED;
+        background: #141e27;
+        color: #e9e9ed;
         display: flex;
         justify-content: center;
         align-items: center;
         font-size: 1rem;
         font-weight: 500;
         cursor: pointer;
-        &:active{
-          transform: scale(.95);
+        &:active {
+          transform: scale(0.95);
         }
       }
     }
   }
 }
 .show {
-  animation: show-container .5s both;
+  animation: show-container 0.5s both;
   .settings {
-    animation: show-settings .5s both;
+    animation: show-settings 0.5s both;
   }
 }
 .hide {
-  animation: hide-container .5s both;
+  animation: hide-container 0.5s both;
   .settings {
-    animation: hide-settings .5s both;
+    animation: hide-settings 0.5s both;
   }
 }
 
@@ -101,53 +101,53 @@
 }
 
 @keyframes show-container {
-  0%{
+  0% {
     width: 100%;
     height: 100%;
     background: transparent;
     transform: scale(1);
   }
-  100%{
+  100% {
     transform: scale(1);
     width: 100%;
     height: 100%;
-    background: #0C1116AA;
+    background: #0c1116aa;
   }
 }
 
 @keyframes hide-container {
-  0%{
+  0% {
     width: 100%;
     height: 100%;
     transform: scale(1);
-    background: #0C1116AA;
+    background: #0c1116aa;
   }
-  90%{
+  90% {
     width: 100%;
     height: 100%;
     transform: scale(1);
     opacity: 0;
   }
-  100%{
+  100% {
     transform: scale(0);
     background: transparent;
   }
 }
 
 @keyframes show-settings {
-  0%{
+  0% {
     transform: scale(0);
   }
-  100%{
+  100% {
     transform: scale(1);
   }
 }
 
 @keyframes hide-settings {
-  0%{
+  0% {
     transform: scale(1);
   }
-  100%{
+  100% {
     transform: scale(0);
   }
 }
