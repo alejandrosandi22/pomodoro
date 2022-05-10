@@ -1,0 +1,72 @@
+.clock-wrapper {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+  width: 35rem;
+  height: 35rem;
+  background: #0c1116;
+  box-shadow: inset 0.25rem 0.25rem 0.8rem #080c10,
+    inset -0.25rem -0.25rem 0.8rem #20303e;
+  border-radius: 50%;
+  .inside {
+    z-index: 10;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 92%;
+    width: 92%;
+    background: #141e27;
+    box-shadow: 0.25rem 0.25rem 0.5rem #080c10, -0.25rem -0.25rem 0.5rem #20303e;
+    border-radius: 50%;
+    .timer {
+      font-size: 8rem;
+      color: #eeedde;
+      font-weight: 400;
+    }
+    .actions {
+      position: absolute;
+      color: #eeedde;
+      font-size: 2rem;
+      bottom: 4rem;
+      cursor: pointer;
+    }
+  }
+  .left,
+  .right {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    background: #eeedde;
+    background: transparent;
+    border-radius: 50%;
+    clip: rect(0px, 35rem, 35rem, 17.5rem);
+    .progress {
+      position: absolute;
+      height: 100%;
+      width: 100%;
+      border-radius: 50%;
+      clip: rect(0px, 17.5rem, 35rem, 0px);
+      background: #357c3c;
+    }
+  }
+  .left {
+    .progress {
+      z-index: 5;
+    }
+  }
+  .right {
+    transform: rotate(180deg);
+    .progress {
+      z-index: 5;
+    }
+  }
+}
